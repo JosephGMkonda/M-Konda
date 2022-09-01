@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row  mt-3">
+        <div class="col-md-2"></div>
+
+        <div class="col-md-6 col-sm-12 border-bottom mb-2">
+           
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postModal">
+    What's on your mind?
+  </button>
+
+
+
+
+  <div class="modal" tabindex="-1" id="postModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title center"> Create Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+            <form action="{% url 'add-post'%}" enctype="multipart/form-data" method="POST">
+
+              {% csrf_token %}
+              <div class="form-group p-2">
+                <textarea 
+                class="form-control" 
+                placeholder="What's your mind?" 
+                id="floatingTextarea"></textarea>
+              </div>
+              <div class="form-group p-2">
+                <input class="form-control" type="file" id="formFile"> 
+              </div>
+              <hr/>
+
+              <button type="submit" class="btn w-100 btn-large btn-block btn-primary">Post</button>
+            
+            </form> 
+          </div>
+        
+          
+          
+      
+      </div>
+    </div>
+  </div>
+  
+                 {% for posts in post_items %}
+                <div class="card mt-4">
+                    <h6 class="m-2">
+                        <strong>{{posts.user.username}}</strong> {{posts.posted}}  
+                    </h6>
+
+                    <div class="img-wrapper  mt-2">
+                        <h6 class="m-2">{{posts.caption}}</h6>
+
+                        {% if posts.pictures%}
+
+                        <img src="{{posts.pictures.url}}" class="card-img-top" alt="Responsive image"/>
+                       {% endif %}
+                       </div>
+                    
+                   
+                    
+                    
+                    
+                    
+
+
+
+
+
+                
+
+                    </div>
+                  {% endfor %}
+                    
+
+
+
+                
+
+                
+
+            
+            
+        </div>
+
+        <div class="col-md-4"></div>
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock  %}
