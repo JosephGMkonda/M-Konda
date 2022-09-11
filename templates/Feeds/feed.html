@@ -10,40 +10,17 @@
         <div class="col-md-6 col-sm-12 border-bottom mb-2">
            
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postModal">
+<button type="button" class="btn btn-primary show-form"  >
     What's on your mind?
   </button>
 
 
 
 
-  <div class="modal" tabindex="-1" id="postModal">
+  <div class="modal fade" tabindex="-1" id="Post">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title center"> Create Post</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          
-            <form action="{% url 'add-post'%}" enctype="multipart/form-data" method="POST">
-
-              {% csrf_token %}
-              <div class="form-group p-2">
-                <textarea 
-                class="form-control" 
-                placeholder="What's your mind?" 
-                id="floatingTextarea"></textarea>
-              </div>
-              <div class="form-group p-2">
-                <input class="form-control" type="file" id="formFile"> 
-              </div>
-              <hr/>
-
-              <button type="submit" class="btn w-100 btn-large btn-block btn-primary">Post</button>
-            
-            </form> 
-          </div>
+       
         
           
           

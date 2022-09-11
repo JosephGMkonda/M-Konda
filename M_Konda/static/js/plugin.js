@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('.show-form').click(function(){
+    $('.post-form').click(function(){
         $.ajax({
             url:'add-post',
             type: 'get',

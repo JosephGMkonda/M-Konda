@@ -5,9 +5,11 @@ from django.views import View
 from Feeds.models import Posts,Stream,Likes
 from django.contrib.auth.decorators import login_required
 from django.template import loader
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from .form import newPost
 from django.contrib import messages
+from django.template.loader import render_to_string
+
 
 @login_required
 def feed(request):
@@ -34,23 +36,67 @@ def feed(request):
 @login_required
 def addPost(request):
     user = request.user.id
-    post = Posts.objects.all()
+
     if request.method == "POST":
-        caption = request.POST.get('caption',False)
-        pictures = request.POST.get('pictures',False)
+        form = newPost(request.POST, request.FILES)
+        if form.is_valid():
+            caption = form.cleaned_data.get('caption')
+            pictures = form.cleaned_data.get('pictures')
 
-        if not caption:
-            messages.error(request,"caption needed")
-        p, created = Posts.objects.get_or_create(pictures=pictures,caption=caption,user_id=user)
-        p.save()
-        messages.success(request,"The product added successfully")
-        return redirect('feeds')
+            p, created = Posts.objects.get_or_create(caption=caption,pictures=pictures,user_id=user)
+            p.save()
 
+            return redirect('feeds')
+    else:
+        form = newPost()
+    
     context = {
-        post:"post",
-        "values":request.POST
+        "form": form
     }
-    return render(request,'Feeds/feed.html', context)
+
+    template = loader.get_template('Feeds/addPost.html')
+
+    
+    return JsonResponse(template.render(context, request))
+
+    
+
+    
 
 
-        
+
+
+
+    # if method == "POST":
+
+
+
+
+
+
+    #     if request.method == "POST":
+    #     form = newPost(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         picture = form.cleaned_data.get('picture')
+    #         caption = form.cleaned_data.get('caption')
+    #         tags_form = form.cleaned_data.get('tags')
+
+    #         tags_list = list(tags_form.split(','))
+
+    #         for tag in tags_list:
+    #             t, created = Tag.objects.get_or_create(title=tag)
+    #             tags_obj.append(t)
+    #         p ,created = Posts.objects.get_or_create(pictures=picture, caption=caption, user_id = user)
+    #         p.tags.set(tags_obj)
+    #         p.save()
+
+    #         return redirect('feeds')
+    # else:
+    #     form = newPost()
+
+    # context = {
+    #     "form": form
+    #     }
+    # return render(request,'Feed/newpost.html', context)
+
+  
