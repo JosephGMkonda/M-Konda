@@ -1,7 +1,7 @@
 {% load crispy_forms_tags %}
 
- {% block content %}
-<form  method="post" class="Create-form" data-url="{%url 'add-post'%}" enctype="multipart/form-data" >
+
+<form  method="post" class="Create-form" data-url="{% url 'add-post'%}" enctype="multipart/form-data" >
 
     {%csrf_token%}
     <div class="modal-header">
@@ -9,15 +9,18 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
      <div class="modal-body">
-
-        {{form|crispy}}
+    {{form.as_p}}
 
      </div>
      
     
     <hr/>
 
+    <div class="modal-footer">
+
     <button type="submit" class="btn w-100 btn-large btn-block btn-primary">Post</button>
+
+</div>
   
 
 
@@ -26,5 +29,5 @@
 </form>
 
 
-{% endblock %}
+
 

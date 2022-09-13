@@ -36,28 +36,50 @@ def feed(request):
 @login_required
 def addPost(request):
     user = request.user.id
-
+    data = dict()
     if request.method == "POST":
-        form = newPost(request.POST, request.FILES)
+        form = newPost(request.POST, request.FILE)
         if form.is_valid():
             caption = form.cleaned_data.get('caption')
             pictures = form.cleaned_data.get('pictures')
 
             p, created = Posts.objects.get_or_create(caption=caption,pictures=pictures,user_id=user)
+            print(p)
             p.save()
-
             return redirect('feeds')
+    
+
     else:
         form = newPost()
-    
+
     context = {
-        "form": form,
+        'form':form
     }
+    data['html_form'] = render_to_string('Feeds/addPost.html',context, request=request)
+    return JsonResponse(data)
+    # user = request.user.id
 
-    template = loader.get_template('Feeds/addPost.html')
+    # if request.method == "POST":
+    #     form = newPost(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         caption = form.cleaned_data.get('caption')
+    #         pictures = form.cleaned_data.get('pictures')
+
+    #         p, created = Posts.objects.get_or_create(caption=caption,pictures=pictures,user_id=user)
+    #         p.save()
+
+    #         return redirect('feeds')
+    # else:
+    #     form = newPost()
+    
+    # context = {
+    #     "form": form,
+    # }
+
+    # template = loader.get_template('Feeds/addPost.html')
 
     
-    return JsonResponse(template.render(context, request), safe=False)
+    # return JsonResponse(template.render(context, request), safe=False)
 
     
 
