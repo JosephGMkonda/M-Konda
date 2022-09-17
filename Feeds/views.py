@@ -9,6 +9,8 @@ from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from .form import newPost
 from django.contrib import messages
 from django.template.loader import render_to_string
+from comment.form import CommentForms
+from comment.models import comments
 
 
 @login_required
@@ -33,12 +35,47 @@ def feed(request):
 
     return HttpResponse(template.render(context, request))
 
+
+@login_required
+def postDetails(request, post_id):
+    post = get_object_or_404(Posts, id=post_id)
+    user = request.user
+    comment = comments.objects.filter(post=post).order_by('date')
+
+    if request.method == "POST":
+        form = CommentForms(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = user
+            comment.save()
+
+            return HttpResponseRedirect(reverse('postdetail',args=[post_id]))
+
+        else: 
+            form = CommentForms()
+
+    
+    
+    
+    template = loader.get_template('Feeds/postDetails.html')
+
+    context = {
+        'post':post
+    }
+
+    return HttpResponse(template.render(context, request))
+    
+
+
+
+
 @login_required
 def addPost(request):
     user = request.user.id
     data = dict()
     if request.method == "POST":
-        form = newPost(request.POST, request.FILE)
+        form = newPost(request.POST, request.FILES)
         if form.is_valid():
             caption = form.cleaned_data.get('caption')
             pictures = form.cleaned_data.get('pictures')
@@ -57,30 +94,7 @@ def addPost(request):
     }
     data['html_form'] = render_to_string('Feeds/addPost.html',context, request=request)
     return JsonResponse(data)
-    # user = request.user.id
-
-    # if request.method == "POST":
-    #     form = newPost(request.POST, request.FILES)
-    #     if form.is_valid():
-    #         caption = form.cleaned_data.get('caption')
-    #         pictures = form.cleaned_data.get('pictures')
-
-    #         p, created = Posts.objects.get_or_create(caption=caption,pictures=pictures,user_id=user)
-    #         p.save()
-
-    #         return redirect('feeds')
-    # else:
-    #     form = newPost()
     
-    # context = {
-    #     "form": form,
-    # }
-
-    # template = loader.get_template('Feeds/addPost.html')
-
-    
-    # return JsonResponse(template.render(context, request), safe=False)
-
     
 
     

@@ -9,6 +9,7 @@ $(document).ready(function(){
             },
             success: function(data){
                 $('#Post .modal-content').html(data.html_form);
+                console.log("Hello Joseph")
             }
         })
     })

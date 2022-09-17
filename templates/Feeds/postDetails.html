@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row  mt-3">
+        <div class="col-md-2"></div>
+
+        <div class="col-md-6 col-sm-12 border-bottom mb-2">
+           
+
+  
+                
+                <div class="card mt-4">
+                    <h6 class="m-2">
+                        <strong>{{post.user.username}}</strong> {{post.posted}}  
+                    </h6>
+
+                    <div class="img-wrapper  mt-2">
+                        <h6 class="m-2">{{post.caption}}</h6>
+
+                        {% if post.pictures%}
+
+                        <img src="{{posts.pictures.url}}" class="card-img-top" alt="Responsive image"/>
+                       {% endif %}
+                       </div>
+                    </div>
+    
+                    
+
+
+
+            </div>
+
+        <div class="col-md-4"></div>
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock  %}

@@ -35,7 +35,7 @@ def user_directory_path(instance, filename):
     
 class Posts(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    pictures = models.ImageField(upload_to=user_directory_path,verbose_name="Picture", null=True, default=False, blank=True)
+    pictures = models.ImageField(upload_to=user_directory_path,verbose_name="Picture", null=True,blank=True)
     caption = models.TextField(max_length=1500,verbose_name='Caption', null=True, default=False,blank=True)
     posted = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE)

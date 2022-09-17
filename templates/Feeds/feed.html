@@ -30,45 +30,35 @@
   </div>
   
                  {% for posts in post_items %}
-                <div class="card mt-4">
+                <div class="card mt-4 position-relative">
                     <h6 class="m-2">
                         <strong>{{posts.user.username}}</strong> {{posts.posted}}  
                     </h6>
 
-                    <div class="img-wrapper  mt-2">
+                    <div class=" mt-2 ">
                         <h6 class="m-2">{{posts.caption}}</h6>
 
                         {% if posts.pictures%}
 
                         <img src="{{posts.pictures.url}}" class="card-img-top" alt="Responsive image"/>
                        {% endif %}
+
+                      
+
                        </div>
+
+                       <a href="{% url 'postdetail' posts.id %} " class="stretched-link"></a>
                     
-                   
+                       
                     
                     
-                    
-                    
-
-
-
-
-
-                
-
-                    </div>
+   </div>
                   {% endfor %}
                     
 
 
 
-                
-
-                
-
-            
-            
-        </div>
+            </div>
 
         <div class="col-md-4"></div>
 
