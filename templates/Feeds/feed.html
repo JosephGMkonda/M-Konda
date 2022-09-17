@@ -49,7 +49,17 @@
 
                        <a href="{% url 'postdetail' posts.id %} " class="stretched-link"></a>
                     
-                       
+                   <div class="d-flex flex-row">
+                    <form method="POST" action="{%  url 'likes' post.id %}">
+                      {% csrf_token %}
+                      <button style="background-color: transparate; border: none; box-shadow: none"> 
+
+                        <i class="far fa-thumbs-up"></i>
+                      </button>
+
+                    </form>
+
+                   </div>    
                     
                     
    </div>

@@ -40,7 +40,7 @@ def feed(request):
 def postDetails(request, post_id):
     post = get_object_or_404(Posts, id=post_id)
     user = request.user
-    comment = comments.objects.filter(post=post).order_by('date')
+    comment = comments.objects.filter(post=post).order_by('created')
 
     if request.method == "POST":
         form = CommentForms(request.POST)
@@ -52,8 +52,8 @@ def postDetails(request, post_id):
 
             return HttpResponseRedirect(reverse('postdetail',args=[post_id]))
 
-        else: 
-            form = CommentForms()
+    else: 
+        form = CommentForms()
 
     
     
@@ -61,7 +61,9 @@ def postDetails(request, post_id):
     template = loader.get_template('Feeds/postDetails.html')
 
     context = {
-        'post':post
+        'post':post,
+        'form': form,
+        'comment':comment
     }
 
     return HttpResponse(template.render(context, request))
@@ -94,8 +96,29 @@ def addPost(request):
     }
     data['html_form'] = render_to_string('Feeds/addPost.html',context, request=request)
     return JsonResponse(data)
+
+@login_required 
+def Likes(request, post_id):
+    user = request.user 
+    post = Posts.objects.get(id=post_id)
+
+    current_liked = post.like
+    liked = Likes.objects.filter(user = user,posts=post).count()
+
+    if not liked:
+        like = Likes.objects.create(user=user, posts=post) 
+        current_liked = current_liked + 1
+    else:
+        Likes.objects.create(user=user, posts=post).delete()
+        current_liked = current_liked - 1
+
+    post.like = current_liked
+    post.save()
+    return HttpResponseRedirect(reverse('postdetail', args=[post_id]))
+        
+
     
-    
+
 
     
 

@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
 
 {% block content %}
 
@@ -26,14 +28,41 @@
                        {% endif %}
                        </div>
                     </div>
+                    {% for comments in comment %}
+                   <div class="pt-2">
+                    <div class="pt-2" >
+                      <strong>{{comments.user.username}}</strong>
+                        <p> {{comments.body}}</p>
+                        
+                        <small>{{ comments.created}}</small>
+                      </div>
+                      {% endfor %}
+                      <form action="" method="post" class="m-2">
+                        {% csrf_token %}
+                      
+                        <div class="form-group">
+                          <div class="p-2">
+                            {{form.as_p}}
+                          </div>
+                          
+                        <button type="submit" name="action" class="btn btn-light">Comment</button>
+                          
+                        </div>
+                      
+                        
+                      
+                      </form>
+
+                    </div>
     
+                    </div>
+
                     
 
+        <div class="col-md-4">
 
 
-            </div>
-
-        <div class="col-md-4"></div>
+        </div>
 
     </div>
 

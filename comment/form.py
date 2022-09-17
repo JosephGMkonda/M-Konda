@@ -11,6 +11,7 @@ class CommentForms(forms.ModelForm):
         {
             'class':'input is-medium',
             'rows':'2',
+            'cols':'70',
             'placeholder':'write your comment'
         
         }),
